@@ -5,25 +5,60 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\User;
+use App\Models\purchase;
+use Carbon\Carbon;
+use App\Models\cancel;
 use function Ramsey\Uuid\v1;
 
 class adminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+
     public function index()
     {
-        return view('admin.dashboard');
+        $today = purchase::whereDate('created_at', Carbon::today())->get();
+        $purhcase = purchase::all();
+        $purhcases = purchase::all();
+        $cancel = cancel::all();
+        return view('admin.dashboard' , ['today'=>$today , 'purchase'=>$purhcase , 'purchases' => $purhcases , 'cancel'=>$cancel]);
+    }
+    public function indexsearch(Request  $request){
+        $today = purchase::whereDate('created_at', Carbon::today())->get();
+        $purhcase = purchase::all();
+        $purhcases = purchase::where('recipt', 'LIKE', "%$request->search%")->paginate();
+        $cancel = cancel::all();
+        return view('admin.dashboard' , ['today'=>$today , 'purchase'=>$purhcase , 'purchases' => $purhcases,'cancel'=>$cancel]);
+
     }
 
     public function products(){
         $data = Products::all();
         $hitung = Products::all();
-        return view('admin.products' , ['data' => $data , 'hitung' =>$hitung]);
+        $purhcases = purchase::all();
+        return view('admin.products' , ['data' => $data , 'hitung' =>$hitung ,'purchases'=>$purhcases]);
     }
     public function users(){
         $admin = User::all()->where('role','admin');
         $cashier = User::all()->where('role' , 'cashier');
         $data = User::all();
-        return view('admin.users', ['admin' => $admin , 'cashier'=> $cashier]);
+        return view('admin.users', ['admin' => $admin , 'cashier'=> $cashier ,'data'=>$data]);
+    }
+    public function userstheme($theme){
+        $admin = User::all()->where('role','admin');
+        $cashier = User::all()->where('role' , 'cashier');
+        $data = User::all()->where('role',$theme);
+        return view('admin.users', ['admin' => $admin , 'cashier'=> $cashier ,'data'=>$data]);
+    }
+    public function usersearch(Request $request){
+
+        $admin = User::all()->where('role','admin');
+        $cashier = User::all()->where('role' , 'cashier');
+        $data = User::where('name', 'LIKE' , "%$request->search%")->paginate();
+        return view('admin.users', ['admin' => $admin , 'cashier'=> $cashier ,'data'=>$data]);
     }
     public function productsadd(){
         return view('admin.productsadd');
@@ -47,8 +82,9 @@ class adminController extends Controller
     public function productssearch(Request $request){
         $data = Products::where('name', 'LIKE',"%{$request->search}%")->paginate();
         $hitung = Products::all();
+        $purhcases = purchase::all();
 
-        return view('admin.products' , ['data' => $data , 'hitung'=>$hitung]);
+        return view('admin.products' , ['data' => $data , 'hitung'=>$hitung , 'purchases'=>$purhcases]);
     }
 
     public function productsedit($id){
@@ -74,5 +110,10 @@ class adminController extends Controller
 
     public function usersadd(){
         return view('admin.usersadd');
+    }
+    public function usersremove($id){
+        $data = User::find($id);
+        $data->delete();
+        return redirect()->back();
     }
 }

@@ -13,4 +13,7 @@ class request_order extends Model
     public function product(){
         return $this->belongsTo(Products::class , 'product_id' , 'id');
     }
+    public function total(){
+        return $this->hasOne(total::class , 'id_request' , 'id');
+    }
 }

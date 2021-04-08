@@ -35,8 +35,12 @@
             <div class="col-md">
                 <div class="card w-100 p-3 d-flex shadow" style="border-left: 10px solid #3A5488">
                     <div class="row">
+                        <?php $item = 0 ; $x = 0?>
+                        @foreach($purchases as $x)
+                            <?php $item += $x['total_items']?>
+                        @endforeach
                         <div class="col"><h4>Product sold</h4></div>
-                        <div class="col"><h1>tes</h1></div>
+                        <div class="col"><h1>{{$item}}</h1></div>
                     </div>
 
                 </div>

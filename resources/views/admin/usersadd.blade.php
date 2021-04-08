@@ -1,8 +1,8 @@
-@extends('admin.dashboard')
+@extends('navbar.adminnav')
 
 @section('content')
     <div class="container">
-        <h3 class="mt-3">New product</h3>
+        <h3 class="mt-3">New User</h3>
         <form  action="/admin/users/usersadd" class="form-group mt-3" enctype="multipart/form-data" method="post">
             @csrf
             @method('post')
@@ -35,8 +35,8 @@
 
             <select class="custom-select mt-3" id="inputGroupSelect01" name="role">
                 <option selected>Role..</option>
-                <option value="1">Cashier</option>
-                <option value="2">Stafff Gudang</option>
+                <option value="cashier">Cashier</option>
+                <option value="storage">Stafff Gudang</option>
             </select>
             <button class="btn btn-success mt-3 d-block mx-auto w-100" type="submit">Create New User</button>
 

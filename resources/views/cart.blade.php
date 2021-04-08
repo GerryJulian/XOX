@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body style="background-color: gray">
@@ -65,11 +66,16 @@
 
                 @endforeach
             <div class="p-5 text-right">
-                <a href="/cart" class="btn btn-info text-white">Back to Shopping</a>
+                <a href="/index" class="btn btn-info text-white">Back to Shopping</a>
                 <a href="/cartcout" class="btn btn-success text-right">Checkout</a>
             </div>
         </div>
     </div>
 </div>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@if(session('recipt'))
+    <script>
+        swal("Selamat!", "pembelian berhasil recipt anda :  {{session('recipt')}}", "success");
+    </script>
+@endif
 </body>

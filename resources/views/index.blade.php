@@ -33,9 +33,10 @@
     <div class="card mt-5">
         <div class="card-body">
 
-            <form action="" class="d-flex">
-                <input type="text" class="form-control">
-                <a class="btn btn-secondary">Search</a>
+            <form action="{{route('indexsearch')}}" class="d-flex" method="post">
+                @csrf
+                <input type="text" name="search" class="form-control">
+                <button type="submit" class="btn btn-secondary">Search</button>
             </form>
             <h3 class="m-3">Barang Jualan</h3>
 

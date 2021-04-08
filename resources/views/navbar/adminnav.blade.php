@@ -22,6 +22,7 @@
 <body>
 <div id="app">
     @auth
+    @if(Auth::user()->role == "admin")
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center" style="padding-left: 50px">
             <a class="navbar-brand p-2" href="{{ url('/') }}">
@@ -74,7 +75,7 @@
                             Dashboard
                             </a>
                             @else
-                                <a {{route('admin.dashboard')}} class="nav-link">
+                                <a href=" {{route('admin.dashboard')}} "class="nav-link">
                                     <img src="{{asset('logo/dashboardin.png')}}" alt="" width="30px">
                                     Dashboard
                                 </a>
@@ -122,6 +123,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('editprof') }}">
+                                    Edit profile
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -137,7 +141,104 @@
                 </ul>
             </div>
         </div>
-    </nav>\
+    </nav>
+    @endif
+
+    @if(Auth::user()->role == 'storage')
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                <div class="container-fluid d-flex justify-content-between align-items-center" style="padding-left: 50px">
+                    <a class="navbar-brand p-2" href="{{ url('/') }}">
+                        <img src="{{asset('logo/logo.png')}}" alt="" width="125px">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+
+
+                    <div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mx-auto" >
+                            <h2 class="text-center text-secondary " style="text-align: center">
+                                Storage Keeper Panel
+                            </h2>
+                        </ul>
+
+
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav">
+
+                            <form action="{{route('logout')}}" method="post">
+                                @csrf
+                                <button  type="submit" class="btn btn-outline-danger">Log Out</button>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        @endif
+        @if(Auth::user()->role == "cashier")
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                <div class="container-fluid d-flex justify-content-between align-items-center" style="padding-left: 50px">
+                    <a class="navbar-brand p-2" href="{{ url('/') }}">
+                        <img src="{{asset('logo/logo.png')}}" alt="" width="125px">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+
+
+                    <div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mx-auto" >
+                            <h2 class="text-center text-secondary " style="text-align: center">
+                                Cashier Panel
+                            </h2>
+                        </ul>
+
+
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav">
+
+                            <!-- Authentication Links -->
+                            @guest
+                                @if (Route::has('login'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    </li>
+                                @endif
+
+                                @if (Route::has('register'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    </li>
+                                @endif
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }}
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @endguest
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        @endif
+
     @endauth
     @guest
     @endguest
@@ -146,6 +247,13 @@
     </main>
 </div>
 
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@if(session('success'))
+    <script>
+        swal("Good job!", "Pembayaran Telah Berhasil", "success");
+    </script>
+    @endif
 @stack('script')
 </body>
 

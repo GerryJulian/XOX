@@ -12,7 +12,7 @@
                 <div class="card w-100 p-3 d-flex shadow" style="border-left: 10px solid #3A5488">
                     <div class="row">
                         <div class="col"><h4>Admin Total</h4></div>
-                        <div class="col"><h1>tes</h1></div>
+                        <div class="col"><h1>{{count($admin)}}</h1></div>
                     </div>
 
                 </div>
@@ -21,7 +21,7 @@
                 <div class="card w-100 p-3 d-flex shadow" style="border-left: 10px solid #3A5488">
                     <div class="row">
                         <div class="col"><h4>Active Admin</h4></div>
-                        <div class="col"><h1>tes</h1></div>
+                        <div class="col"><h1>1</h1></div>
                     </div>
 
                 </div>
@@ -33,7 +33,7 @@
                 <div class="card w-100 p-3 d-flex shadow" style="border-left: 10px solid #3A5488">
                     <div class="row">
                         <div class="col"><h4>Cashier Total</h4></div>
-                        <div class="col"><h1>tes</h1></div>
+                        <div class="col"><h1>{{count($cashier)}}</h1></div>
                     </div>
 
                 </div>
@@ -42,7 +42,7 @@
                 <div class="card w-100 p-3 d-flex shadow" style="border-left: 10px solid #3A5488">
                     <div class="row">
                         <div class="col"><h4>Cashier Active</h4></div>
-                        <div class="col"><h1>tes</h1></div>
+                        <div class="col"><h1>0</h1></div>
                     </div>
 
                 </div>
@@ -53,16 +53,18 @@
         <div class="d-flex justify-content-between mt-4">
             <div class="d-flex">
                 <h3 class="h4 mr-5 "> Users List</h3>
-                <a href="" class="btn btn-primary">All</a>
-                <a href="" class="btn btn-primary">Admin</a>
-                <a href="" class="btn btn-primary">Cashier</a>
+                <a href="/admin/users/" class="btn btn-primary">All</a>
+                <a href="/admin/users/storage" class="btn btn-primary">Storage</a>
+                <a href="/admin/users/cashier" class="btn btn-primary">Cashier</a>
 
             </div>
+            <form action="/admin/users/search/" method="post">
+                @csrf
             <div class="d-flex">
-                <input type="text" width="400px" class="form-control">
-                <button type="button" class="btn btn-secondary"> Search </button>
-
+                <input type="text" width="400px" name="search" class="form-control" placeholder="input name here">
+                <button type="submit" class="btn btn-secondary"> Search </button>
             </div>
+            </form>
         </div>
 
 
@@ -77,14 +79,16 @@
                         <th>Status</th>
                         <th>action</th>
                     </tr>
+                    @foreach($data as $d)
                     <tr class="" style="margin-top: 200px">
-                        <td>Purchase ID</td>
-                        <td>Total Items</td>
-                        <td>Total Price</td>
-                        <td>Recipt Number</td>
-                        <td>Cashier ID</td>
-                        <td>Status</td>
+                        <td>{{$d->id}}</td>
+                        <td>{{$d->role}}</td>
+                        <td>{{$d->name}}</td>
+                        <td>{{$d->username}}</td>
+                        <td class="text-danger">offline</td>
+                        <td><a href="/admin/users/remove/{{$d->id}}" class="btn btn-danger">Remove</a></td>
                     </tr>
+                    @endforeach
 
                 </table>
             </div>
