@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="container">
-        <h3 class="mt-3">New User</h3>
+        <h3 class="mt-3">Edit User</h3>
         <form  action="/editprofs" class="form-group mt-3" enctype="multipart/form-data" method="post">
             @csrf
             @method('post')

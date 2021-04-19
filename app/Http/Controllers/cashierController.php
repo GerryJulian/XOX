@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Http\Middleware;
 namespace App\Http\Controllers;
 use App\Models\request_order;
 use App\Models\cancel;
@@ -13,7 +13,7 @@ class cashierController extends Controller {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('cashier');
+        //$this->middleware('cashier1');
     }
 
 
@@ -38,7 +38,12 @@ class cashierController extends Controller {
         $total = total::all()->where('id_request',$req)->first();
         return view('cashier.detail' , ['data'=>$data , 'total'=>$total , 'ids'=>$id , 'req'=>$req]);
     }
-
+    public function search(Request $request){
+        $data = request_order::where('status','Ready To Pay')->where('recipt', 'LIKE' , "%$request->search%")->paginate();
+        $inprog = request_order::where('status','In Progress')->where('recipt', 'LIKE' , "%$request->search%")->paginate();
+        $read = request_order::where('status','Ready To Process')->where('recipt', 'LIKE' , "%$request->search%")->paginate();
+        return view('cashier.index' , ['data'=>$data , 'inprog'=>$inprog , 'read'=>$read]);
+    }
     public function post($id , $req , Request $request){
         $data = request_order::all()->where('recipt' , $id);
 

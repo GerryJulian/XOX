@@ -29,7 +29,7 @@ class guestController extends Controller
            }
 
            $data->update();
-           return redirect()->back();
+           return redirect(route('admin.users'));
         }else{
 
             return redirect()->back()->with('error','error');

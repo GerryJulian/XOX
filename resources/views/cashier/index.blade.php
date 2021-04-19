@@ -6,8 +6,9 @@
                 <h2 class="h2">Purchase Order List</h2>
             </div>
             <div class="col">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" method="get" action="/cashier/index/cart/search">
+                @csrf
+                    <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -65,7 +66,7 @@
                     <tr>
                         <td scope="row">{{$r->id}}</td>
                         <td>{{$r->quantity}}</td>
-                        <td>{{$r->price * $in->quantity}}</td>
+                        <td>{{$r->price * $r->quantity}}</td>
                         <td>{{$r->recipt}}</td>
                         <td>{{Auth::user()->id}}</td>
                         <td class="text-danger">{{$r->status}}</td>
